@@ -5,13 +5,45 @@ import Grid from "@material-ui/core/Grid"
 import LeftSideMenuComponent from "../components/LeftSideMenuComponent"
 import SearchNavBarComponent from "../components/SearchNavBarComponent"
 import MailBoxComponent from "../components/MailBoxComponent"
-import data from "../data"
-
+import setInitialMailState from "../redux/actions/setIntialMailState";
+import filterMails from "../redux/actions/filterMails";
+import Mail from "../models/Mail";
 
 class Dashboard extends Component {
 
+    constructor(props){
+        super(props);
+        this.state = {
+            value: ""
+        };
+        this.onChange = this.onChange.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+    }
+
+    onChange(event){
+        let value = event.target.value;
+        this.setState({value})
+    }
+
+    handleSearch(e){
+        const isEnterKey = ( e.keyCode === 13 );
+        if ( isEnterKey ){
+            this.filterMails()
+        }
+    }
+
+    filterMails(){
+        this.props.filterMails(this.props.mail, this.state.value);
+
+    }
+
+    async componentDidMount() {
+        this.props.setInitialMailState(await Mail.getMails());
+    }
 
     render() {
+        let {results, mail} = this.props;
+        let data =  ( results.length > 0 ) ? results: mail;
         return (
             <Fragment>
                 <Container direction="row" spacing={0}>
@@ -21,7 +53,7 @@ class Dashboard extends Component {
                     <Grid item >
                         <Container direction={"column"}>
                             <Grid item >
-                                <SearchNavBarComponent/>
+                                <SearchNavBarComponent onChange={ this.onChange } finalSearch={this.handleSearch} />
                             </Grid>
                             <Grid item >
                                 <MailBoxComponent mails={data}/>
@@ -38,7 +70,13 @@ class Dashboard extends Component {
 
 const mapStateToProps = ( state ) => {
     return {
-        mail: state.mail
+        mail: state.mail,
+        results: state.results
     }
 };
-export default connect(mapStateToProps)(Dashboard);
+
+const mapDispatchToProps = {
+    setInitialMailState,
+    filterMails
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

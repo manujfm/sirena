@@ -4,68 +4,42 @@ import SearchIcon from '@material-ui/icons/Search';
 import { connect } from 'react-redux'
 import InputBase from '@material-ui/core/InputBase';
 import Toolbar from '@material-ui/core/Toolbar';
-import Paper from '@material-ui/core/Paper';
-import Autosuggest from 'react-autosuggest';
-import findSuggestions from '../redux/actions/findSuggestions'
+
 
 class SearchNavBarComponent extends Component {
 
     constructor(props){
         super(props);
-        this.state = {
-            value:""
-        }
-        this.onChange = this.onChange.bind(this);
-        this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
-        this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
-        this.__renderSuggestion = this.__renderSuggestion.bind(this);
-        window.AASSSSSSSSSSSSS= this
+        this.onChange = this.onChange.bind(this)
     }
 
-    onSuggestionsFetchRequested(){
-
+    onChange(event){
+        this.props.onChange(event)
     }
 
-    onSuggestionsClearRequested(){
-
+    sendEnterEventToFather(e){
+        this.props.finalSearch(e)
     }
 
-    onChange(){
-
+    componentWillUnmount() {
+        window.removeEventListener("keypress", (e) => {this.sendEnterEventToFather(e)})
     }
 
-    __renderSuggestion(sugges){
-        console.log("SSSSSS", sugges)
+    componentDidMount() {
+        window.addEventListener("keypress", (e) => {this.sendEnterEventToFather(e)})
     }
 
     render() {
-        let {value} = this.state;
-        const inputProps = {
-            placeholder: 'Type a programming language',
-            value,
-            onChange: this.onChange
-        };
         return (
             <AppBar position="static">
-                {/*<Toolbar>*/}
-                {/*    <div>*/}
-                {/*        <div>*/}
-                {/*            <SearchIcon />*/}
-                {/*        </div>*/}
-                {/*        <Autosuggest*/}
-                {/*            suggestions={suggestions}*/}
-                {/*            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}*/}
-                {/*            onSuggestionsClearRequested={this.onSuggestionsClearRequested}*/}
-                {/*            renderSuggestion={this.__renderSuggestion}*/}
-                {/*            inputProps={inputProps}*/}
-                {/*            renderSuggestionsContainer={options => (*/}
-                {/*                <Paper {...options.containerProps} square>*/}
-                {/*                    {options.children}*/}
-                {/*                </Paper>*/}
-                {/*            )}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*</Toolbar>*/}
+                <Toolbar>
+                    <div>
+                        <div>
+                            <SearchIcon />
+                        </div>
+                        <InputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} onChange={ this.onChange }  />
+                    </div>
+                </Toolbar>
             </AppBar>
 
         );
@@ -73,15 +47,5 @@ class SearchNavBarComponent extends Component {
 
 
 }
-const mapStateToProps = ( state ) => {
-    return {
-        mail: state.mail,
-        suggestions: state.suggestions
-    }
-};
 
-const mapDispatchToProps = {
-    findSuggestions
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchNavBarComponent);
+export default SearchNavBarComponent;

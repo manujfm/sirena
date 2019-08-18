@@ -18,7 +18,6 @@ class MailBoxComponent extends Component {
     __renderMails(){
         let { mails } =  this.props;
         return mails.map( (mail, key) => {
-            mail = new Mail(mail);
             return (
                 <Fragment key={key}>
                     <ListItem alignItems="flex-start">
