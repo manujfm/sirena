@@ -7,12 +7,20 @@ import Mail from '../models/Mail'
 
 class MailBoxComponent extends Component {
 
-    __renderItem(){
+    constructor(props){
+        super(props);
+        this.state = {
+
+        }
+    }
+
+
+    __renderMails(){
         let { mails } =  this.props;
-        return mails.map( (mail) => {
+        return mails.map( (mail, key) => {
             mail = new Mail(mail);
             return (
-                <Fragment>
+                <Fragment key={key}>
                     <ListItem alignItems="flex-start">
                         <ListItemText
                             primary={mail.Subject}
@@ -40,7 +48,7 @@ class MailBoxComponent extends Component {
     render() {
         return (
             <div>
-                {this.__renderItem()}
+                {this.__renderMails()}
             </div>
         );
     }

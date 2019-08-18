@@ -1,10 +1,12 @@
 import React, {Component, Fragment} from 'react';
+import { connect } from 'react-redux'
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 import LeftSideMenuComponent from "../components/LeftSideMenuComponent"
 import SearchNavBarComponent from "../components/SearchNavBarComponent"
 import MailBoxComponent from "../components/MailBoxComponent"
 import data from "../data"
+
 
 class Dashboard extends Component {
 
@@ -34,4 +36,9 @@ class Dashboard extends Component {
 
 }
 
-export default Dashboard;
+const mapStateToProps = ( state ) => {
+    return {
+        mail: state.mail
+    }
+};
+export default connect(mapStateToProps)(Dashboard);
