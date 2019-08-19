@@ -17,19 +17,22 @@ class Dashboard extends Component {
             value: ""
         };
         this.onChange = this.onChange.bind(this);
-        this.handleSearch = this.handleSearch.bind(this);
+        this.getPrevSearch = this.getPrevSearch.bind(this);
     }
 
     onChange(event){
         let value = event.target.value;
-        this.setState({value})
+        this.setState({value}, ()=>{
+            this.filterMails()
+        });
     }
 
-    handleSearch(e){
-        const isEnterKey = ( e.keyCode === 13 );
-        if ( isEnterKey ){
-            this.filterMails()
-        }
+    handleSaveSearch(e){
+
+    }
+
+    getPrevSearch(e){
+
     }
 
     filterMails(){
@@ -53,7 +56,7 @@ class Dashboard extends Component {
                     <Grid item >
                         <Container direction={"column"}>
                             <Grid item >
-                                <SearchNavBarComponent onChange={ this.onChange } finalSearch={this.handleSearch} />
+                                <SearchNavBarComponent onChange={ this.onChange } saveSearch={this.handleSaveSearch}  prevSearch={ this.getPrevSearch }/>
                             </Grid>
                             <Grid item >
                                 <MailBoxComponent mails={data}/>

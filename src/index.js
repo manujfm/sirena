@@ -5,6 +5,8 @@ import { Provider } from 'react-redux'
 import { createBrowserHistory } from "history";
 import RouterApp from "./routes/index"
 import store from './redux/store'
+import sirena from "./app"
+window.sin = sirena
 const  hist = createBrowserHistory();
 
 const rooElement =

@@ -13,7 +13,6 @@ const defaultState = [];
 const redu = function(state=defaultState, action){
     switch (action.type) {
         case filterMails:
-            console.log("ACCCC", action)
             return searchMails(action.mails, action.payload)
         default:
             return state;

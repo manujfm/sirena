@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 const useStyles = makeStyles({
@@ -33,12 +34,11 @@ class LoginComponent extends Component {
         this.state = {
             passwordValue: "",
             userValue: "",
-            errorRequest: { ok: false, errorCode: ""},
             loading: false,
-            messageLoading: "Send"
+            errorMessage: ""
         };
         this.setInputValueOnState = this.setInputValueOnState.bind(this);
-        window.ADS = this
+        this.sendDataToParen = this.sendDataToParen.bind(this);
     }
 
     setInputValueOnState(event){
@@ -49,48 +49,38 @@ class LoginComponent extends Component {
     }
 
     checkEmptyForm(){
+        let res = true;
         let {passwordValue, userValue} = this.state;
-        if (userValue === ""){
-            return false
+
+        if ( userValue === "" ) {
+            this.setState({errorMessage: "User Empty"})
+            res = false
         }
-        if (passwordValue === ""){
-            return false
+
+        if ( passwordValue === "" ){
+            this.setState({errorMessage: "User Empty"})
+            res = false
         }
-        return true
+        return res
     }
 
-    setErrorRequest(error){
-        let orgState = {};
-        Object.assign(orgState, this.state);
-        orgState.errorRequest.ok = true;
-        orgState.errorRequest.errorCode = error;
-        this.setState(orgState)
-    }
 
-    sendRequestLogin(){
-        this.setState({loading: true, messageLoading: ""});
-        // let body = new Login(this.state.userValue, this.state.passwordValue);
+    sendDataToParen(){
         let res = this.checkEmptyForm();
-        if ( !res ){
-            this.setState({loading: false, messageLoading: "Send"});
-            return;
+        if ( res ){
+            let by = {
+                password: this.state.passwordValue,
+                user: this.state.userValue
+            };
+            this.props.login(by)
         }
-        // //Promise
-        // LM.loginRequest(body).then( (resolved) => {
-        //     if ( resolved.ok ){
-        //         window.location = "/ContentManager/Storybox";
-        //         return
-        //     }
-        //     this.setErrorRequest(resolved.error);
-        //     this.setState({loading: false, messageLoading: "Send"})
-        // })
     }
 
     sendEnter(e){
         let keyCode = e.keyCode;
         let enterKey = 13;
-        if(keyCode == enterKey){
-            this.sendRequestLogin()
+        if( keyCode == enterKey ) {
+            this.sendDataToParen()
         }
     }
 
@@ -132,9 +122,19 @@ class LoginComponent extends Component {
                            </Grid>
                        </CardContent>
                        <CardActions>
-                           <Button size="small" color="primary">
-                               Share
-                           </Button>
+                           <Container>
+                               <Grid item>
+                                   <Button size="small" color="primary" onClick={this.sendDataToParen} disabled={this.props.loading}>
+                                       Share
+                                   </Button>
+                               </Grid>
+
+                               { this.props.loading && <Grid item>
+                                                           <LinearProgress color="secondary"  />
+                                                       </Grid>
+                               }
+                           </Container>
+
                        </CardActions>
                    </Card>
                </Grid>
