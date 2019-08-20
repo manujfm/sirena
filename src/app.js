@@ -16,7 +16,7 @@ let getHeaders = function (){
 
 
 
-sirena.request = async function(type, endpoint, payload) {
+sirena.request = async function(type, endpoint, payload={}) {
     let url = `${server.host}:${server.port}/${endpoint}`;
     try {
         let res = await axios.request({
@@ -25,7 +25,7 @@ sirena.request = async function(type, endpoint, payload) {
             data: payload,
             headers: getHeaders().headers
         });
-        return res
+        return res.data
     } catch (e) {
         return {ok:false, error:e}
     }

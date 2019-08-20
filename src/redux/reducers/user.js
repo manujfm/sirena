@@ -1,5 +1,6 @@
 import {type as setCurrentUser} from "../actions/setCurrentUser"
-const defaultState = "";
+import LoginManager from "../../controlers/LoginManager"
+const defaultState = LoginManager.getUserInfo();
 const redu = function(state=defaultState, {type, payload}){
     switch (type) {
         case setCurrentUser:

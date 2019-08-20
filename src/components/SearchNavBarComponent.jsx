@@ -5,7 +5,9 @@ import SaveIcon from '@material-ui/icons/Save';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import { connect } from 'react-redux'
 import InputBase from '@material-ui/core/InputBase';
-import Toolbar from '@material-ui/core/Toolbar';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+
 
 
 class SearchNavBarComponent extends Component {
@@ -18,7 +20,7 @@ class SearchNavBarComponent extends Component {
     }
 
     onChange(event){
-        this.props.onChange(event)
+        this.props.onChange(event.target.value)
     }
 
     sendSaveEventToFather(e){
@@ -29,24 +31,22 @@ class SearchNavBarComponent extends Component {
         this.props.prevSearch(e)
     }
 
+
+
     render() {
         return (
-            <AppBar position="static">
-                <Toolbar>
-                    <div>
-                        <div>
-                            <SearchIcon />
-                        </div>
-                        <InputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} onChange={ this.onChange }  />
-                        <div>
-                            <SaveIcon  onClick={this.sendSaveEventToFather}  />
-                        </div>
-                        <div>
-                            <LibraryBooksIcon onClick={this.sendSavedMailsEventToFather} />
-                        </div>
-                    </div>
-                </Toolbar>
-            </AppBar>
+                <Grid container direction={"row"} style={{padding:"4%"}}>
+                    <Grid item xs={8}>
+                        <SearchIcon />
+                        <InputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} onChange={ this.onChange } value={this.props.value} />
+                    </Grid>
+                    <Grid item xs={1}>
+                        <SaveIcon  fontSize={"large"} onClick={this.sendSaveEventToFather}  />
+                    </Grid>
+                    <Grid item xs={1}>
+                        <LibraryBooksIcon fontSize={"large"} onClick={this.sendSavedMailsEventToFather} />
+                    </Grid>
+                </Grid>
 
         );
     }

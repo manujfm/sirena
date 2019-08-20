@@ -15,10 +15,10 @@ class LoginPage extends Component {
         this.login = this.login.bind(this)
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         let isLogged  = await LoginManager.isLogged();
         if (isLogged){
-            window.location = "/Dashboard"
+            this.redirect()
         }
     }
 

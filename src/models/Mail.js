@@ -1,8 +1,10 @@
-import data from "../data"
+import Record from "./Record";
+import sirena from "../app";
 
-class Mail {
+class Mail extends Record {
 
-    constructor (props){
+    constructor(props){
+        super(props);
         this.Message = props.message;
         this.id = props.id;
         this.Subject = ( props.hasOwnProperty("subject") ) ? props.subject : "-";
@@ -15,6 +17,7 @@ class Mail {
     }
 
     static async getMails(){
+        let data = await sirena.request("get", "api/getMails");
         let mails = [];
         for ( let mail of data ){
             mails.push(new Mail(mail))
@@ -24,13 +27,25 @@ class Mail {
 
     static getSearchOptions(){
         return {
-            keys: [{
-                name: 'Message',
-                weight: 0.3
-            }, {
-                name: 'Subject',
-                weight: 0.7
-            }]
+            keys: [
+                {
+                    name: 'Message',
+                    weight: 0.4
+                },
+                {
+                    name: 'Subject',
+                    weight: 0.4
+                },
+                {
+                    name: 'UserName',
+                    weight: 0.1
+                },
+                {
+                    name: 'UserLastName',
+                    weight: 0.1
+                },
+
+            ]
         }
     }
 

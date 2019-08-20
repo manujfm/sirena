@@ -7,6 +7,7 @@ const RouterApp = () =>
     <div>
         <Switch>
             <Route exact path={"/"} component={loginPage}/>
+            <Route exact path={"/Dashboard"} component={Dashboard}/>
         </Switch>
     </div>;
 

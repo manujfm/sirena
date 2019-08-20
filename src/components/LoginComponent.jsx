@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
+import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Container from '@material-ui/core/Container';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
-const useStyles = makeStyles({
+const styles = {
+    loginContainer:{
+        marginTop:"10%"
+    },
     card: {
-        minWidth: 275,
+        minWidth: 500,
     },
     bullet: {
         display: 'inline-block',
@@ -25,17 +28,17 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 12,
     },
-});
+}
 
 class LoginComponent extends Component {
 
     constructor (props){
         super(props);
         this.state = {
-            passwordValue: "",
-            userValue: "",
+            passwordValue: "1234",
+            emailValue: "sirena@app.la",
             loading: false,
-            errorMessage: ""
+            error: null
         };
         this.setInputValueOnState = this.setInputValueOnState.bind(this);
         this.sendDataToParen = this.sendDataToParen.bind(this);
@@ -44,33 +47,45 @@ class LoginComponent extends Component {
     setInputValueOnState(event){
         let name = event.target.id;
         let value = event.target.value;
-        let obj = ( name == "user") ? {userValue : value} : {passwordValue : value};
+        let obj = ( name == "email") ? {emailValue : value} : {passwordValue : value};
         this.setState(obj)
     }
 
-    checkEmptyForm(){
+    checkForm(){
         let res = true;
-        let {passwordValue, userValue} = this.state;
+        let {passwordValue, emailValue} = this.state;
+        const reg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 
-        if ( userValue === "" ) {
-            this.setState({errorMessage: "User Empty"})
-            res = false
+        if ( emailValue === "" ) {
+            this.setState( (state) => {
+                return {...state, error:{message:"Email can not be empty", input: LoginComponent.TYPE_INPUT_USERNAME}}
+            });
+            return false
+        }
+
+        if ( !reg.test(emailValue) ){
+            this.setState( (state) => {
+                return {...state, error:{message:"Email is not a valid mail", input: LoginComponent.TYPE_INPUT_USERNAME}}
+            });
+            return false
         }
 
         if ( passwordValue === "" ){
-            this.setState({errorMessage: "User Empty"})
-            res = false
+            this.setState( (state) => {
+                return {...state, error:{message:"Password can not be empty", input: LoginComponent.TYPE_INPUT_PASSWORD}}
+            });
+            return  false
         }
         return res
     }
 
 
     sendDataToParen(){
-        let res = this.checkEmptyForm();
+        let res = this.checkForm();
         if ( res ){
             let by = {
                 password: this.state.passwordValue,
-                user: this.state.userValue
+                user: this.state.emailValue
             };
             this.props.login(by)
         }
@@ -93,57 +108,66 @@ class LoginComponent extends Component {
     }
 
     render() {
-        // const classes = useStyles();
+        const { error } = this.state;
         return (
-           <Container direction="column"  justify="center" >
-               <Grid item xs={6} >
-                   <Card >
+           <Grid container direction="column" justify="center"  alignItems={"center"} style={styles.loginContainer} >
+               <Grid item xs={8} sm={8}>
+                   <Card style={styles.card} >
                        <CardContent>
                             <Grid item xs={12}>
-                                <TextField
-                                    id="user"
-                                    name="user"
-                                    label="Username"
-                                    value={this.state.userValue}
-                                    onChange={this.setInputValueOnState}
-                                    margin="normal"
-                                />
+                                <FormControl fullWidth error={ error && error.input ===  LoginComponent.TYPE_INPUT_USERNAME }>
+                                    <TextField
+                                        id="email"
+                                        name="email"
+                                        label="Email"
+                                        value={this.state.emailValue}
+                                        onChange={this.setInputValueOnState}
+                                        margin="normal"
+                                    />
+                                    { error && error.input ===  LoginComponent.TYPE_INPUT_USERNAME && <FormHelperText id="component-error-text">{error.message}</FormHelperText> }
+
+                                </FormControl>
                             </Grid>
                            <Grid item xs={12}>
-                               <TextField
-                                   id="password"
-                                   label="Password"
-                                   type="password"
-                                   name="password"
-                                   value={this.state.passwordValue}
-                                   onChange={this.setInputValueOnState}
-                                   margin="normal"
-                               />
+                               <FormControl fullWidth error={error && error.input ===  LoginComponent.TYPE_INPUT_PASSWORD}>
+                                   <TextField
+                                       id="password"
+                                       label="Password"
+                                       type="password"
+                                       name="password"
+                                       value={this.state.passwordValue}
+                                       onChange={this.setInputValueOnState}
+                                       margin="normal"
+                                   />
+                                   { error && error.input ===  LoginComponent.TYPE_INPUT_PASSWORD && <FormHelperText id="component-error-text">{error.message}</FormHelperText> }
+                               </FormControl>
                            </Grid>
                        </CardContent>
                        <CardActions>
-                           <Container>
-                               <Grid item>
-                                   <Button size="small" color="primary" onClick={this.sendDataToParen} disabled={this.props.loading}>
-                                       Share
-                                   </Button>
-                               </Grid>
-
-                               { this.props.loading && <Grid item>
-                                                           <LinearProgress color="secondary"  />
-                                                       </Grid>
-                               }
-                           </Container>
-
+                            <Grid container direction={"row-reverse"}>
+                                <Grid item>
+                                    <Button size="large" color="primary" onClick={this.sendDataToParen} disabled={this.props.loading}>
+                                        Login
+                                    </Button>
+                                </Grid>
+                                { this.props.loading &&
+                                    <Grid item xs={8}>
+                                        <LinearProgress variant="query"/>
+                                    </Grid>
+                                }
+                            </Grid>
                        </CardActions>
                    </Card>
                </Grid>
-           </Container>
+           </Grid>
 
         );
     }
 
 
 }
+
+LoginComponent.TYPE_INPUT_USERNAME = 1;
+LoginComponent.TYPE_INPUT_PASSWORD = 2;
 
 export default LoginComponent;

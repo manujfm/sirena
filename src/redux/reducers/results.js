@@ -13,7 +13,7 @@ const defaultState = [];
 const redu = function(state=defaultState, action){
     switch (action.type) {
         case filterMails:
-            return searchMails(action.mails, action.payload)
+            return searchMails(action.mails, action.payload);
         default:
             return state;
     }

@@ -11,26 +11,26 @@ class LoginManager {
         this.password = password
     }
 
-    setLoggedUser(info){
+    setLoggedUser(token, info){
         this.setInfoUser(info);
-        this.setSessionID(info)
+        this.setSessionID(token)
     }
 
     setInfoUser(info){
         const expDate = moment().add(1, "h").format();
-        const usData = JSON.stringify({firsname:info.name.firstname, lastname:info.name.lastname});
+        const usData = JSON.stringify(info);
         CookiesManager.setCookie(this.__login_name_us, usData, "/", new Date(expDate))
     }
 
-    setSessionID(info){
+    setSessionID(token){
         const expDate = moment().add(1, "h").format();
-        CookiesManager.setCookie(this.__login_name_to, info.token, "/", new Date(expDate))
+        CookiesManager.setCookie(this.__login_name_to, token, "/", new Date(expDate))
     }
 
     static async isLogged(){
         let payload =  await sirena.request("get","api/verifySessionID" );
-        if ( payload.data ) {
-            return payload.data.ok
+        if ( payload ) {
+            return payload.ok
         }
         return false
     }
@@ -40,16 +40,18 @@ class LoginManager {
     }
 
     static getUserInfo(){
-        return CookiesManager.getCookie("SESSION_NAME")
+        let info = CookiesManager.getCookie("SESSION_NAME")
+        return ( info ) ? info : {}
     }
+
 
     async login(){
         let payload =  await sirena.request("post","api/login", {username: this.user, password:this.password} );
-        if ( payload.data ) {
-            let {data: loginInfo} = payload;
+        if ( payload ) {
+            let loginInfo = payload;
             if ( loginInfo.ok ){
-                this.setLoggedUser(loginInfo);
-                return {ok: true, userinfo: loginInfo.name }
+                this.setLoggedUser(loginInfo.token, loginInfo.userInfo);
+                return {ok: true, userinfo: loginInfo.userInfo }
             }
         }
         return {ok:false, "error": "cant log"}
