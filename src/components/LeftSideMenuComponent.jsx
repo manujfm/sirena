@@ -12,6 +12,8 @@ import Typography from "@material-ui/core/Typography"
 import Avatar from "@material-ui/core/Avatar"
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
+import IconButton from "@material-ui/core/IconButton";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 
 
 const classes = {
@@ -62,19 +64,22 @@ class LeftSideMenuComponent extends Component {
 
     }
 
+    handleDrawerClose(e){
+        this.props.onClose(e)
+    }
+
 
     render() {
         return (
             <Fragment>
-                {/*<Hidden smUp implementation="css">*/}
-                {/*    <Drawer  variant="temporary" anchor="left">*/}
-                {/*        { this.__renderDrawerContent() }*/}
-                {/*    </Drawer>*/}
-                {/*</Hidden>*/}
+                <Drawer  variant="temporary"  open={this.props.open} anchor="left">
+                    <IconButton onClick={ (e) => { this.handleDrawerClose(e) } }>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                    { this.__renderDrawerContent() }
+                </Drawer>
                 <Hidden xsDown implementation="css">
-                    {/*<Drawer containerstyle={{height: 'calc(100% - 80px)', top: 64}} variant="permanent" anchor="left">*/}
-                        { this.__renderDrawerContent() }
-                    {/*</Drawer>*/}
+                    { this.__renderDrawerContent() }
                 </Hidden>
 
             </Fragment>

@@ -25,20 +25,28 @@ class Dashboard extends Component {
             isLogged: false,
             openFilterModal: false,
             loading: false,
-            toast: false
+            toast: false,
+            openResponsiveDrawer: false
         };
         this.onChange = this.onChange.bind(this);
         this.getPrevSearch = this.getPrevSearch.bind(this);
         this.handleSaveSearch = this.handleSaveSearch.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.filterClick = this.filterClick.bind(this);
+        this.handleDrawer = this.handleDrawer.bind(this);
+    }
+
+    handleDrawer(){
+        console.log("AAAAAAAAAAAAAAAAA")
+        this.setState( (oldState) => {
+            return  {openResponsiveDrawer: !oldState.openResponsiveDrawer}
+        })
     }
 
     handleCloseModal(){
-        this.setState({openFilterModal: false})
-        // this.setState( (oldState) => {
-        //    return  {openFilterModal: !oldState.openFilterModal}
-        // })
+        this.setState( (oldState) => {
+           return  {openFilterModal: !oldState.openFilterModal}
+        })
     }
 
     onChange(filter){
@@ -116,17 +124,16 @@ class Dashboard extends Component {
         let data =  ( results.length > 0 ) ? results : mail;
         let username = `${this.props.user.lastname} ${this.props.user.firstname}`;
         return (
-            <Fragment>
-                <Grid container direction="row" spacing={0}>
+                <Grid container direction="row" >
                     <PopUpComponent toast={this.state.toast}/>
                     { this.state.openFilterModal && <FilterModalDialogComponent open={this.state.openFilterModal}
-                                                onFilterClick={ this.filterClick }
-                                                onClose={this.handleCloseModal}
-                                                filters={this.props.filters}/>} 
+                                                                                onFilterClick={ this.filterClick }
+                                                                                onClose={this.handleCloseModal}
+                                                                                filters={this.props.filters}/>}
                     <Grid item xs={2}>
-                        <LeftSideMenuComponent userName={username}/>
+                        <LeftSideMenuComponent userName={username} open={this.state.openResponsiveDrawer} onClose={this.handleDrawer}/>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={12} lg={8}>
                         <Container direction={"column"}>
                             <Grid item >
                                 <SearchNavBarComponent
@@ -134,12 +141,13 @@ class Dashboard extends Component {
                                     onChange={ this.onChange }
                                     saveSearch={this.handleSaveSearch}
                                     prevSearch={ this.getPrevSearch }
+                                    openDrawer={ this.handleDrawer }
                                     // disableButtons={ this.state.loading }
                                 />
                             </Grid>
-                            <Grid item xs={8}>
+                            <Grid item xs={12}>
                                 { this.state.loading &&
-                                    <Grid item xs={8} style={{marginTop:"90px"}}>
+                                    <Grid item xs={12} style={{marginTop:"90px"}}>
                                         <LinearProgress variant={"query"}  />
                                     </Grid>
                                 }
@@ -148,14 +156,13 @@ class Dashboard extends Component {
                         </Container>
                     </Grid>
                 </Grid>
-            </Fragment>
         );
     }
 
 
 }
 
-const mapStateToProps = ( state ) => {
+const mapStateToProps = (state) => {
     return {
         mail: state.mail,
         results: state.results,
