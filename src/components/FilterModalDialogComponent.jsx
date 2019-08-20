@@ -17,13 +17,6 @@ import Typography from "@material-ui/core/Typography";
 
 class FilterModalDialogComponent extends Component {
 
-    constructor(props){
-        super(props);
-        this.handleClose = this.handleClose.bind(this);
-        this.clickSearch = this.clickSearch.bind(this)
-    }
-
-
     getTransitionComponent(){
         return React.forwardRef(function Transition(props, ref) {
             return <Slide direction="up" ref={ref} {...props} />;
@@ -35,27 +28,27 @@ class FilterModalDialogComponent extends Component {
         this.props.onClose()
     }
 
-    clickSearch(e, filter){
-        this.props.onFilterClick(filter);
+    clickSearch (e, filter) {
+        this.props.onFilterClick(filter)
         this.handleClose()
     }
 
     _renderFilters(){
-        return this.props.filters.map( (filter, key) => {
+        return this.props.filters.map((filter, key) => {
             return (
                 <div key={key} id={key + "-" + filter.filter} >
-                    <ListItem alignItems="flex-start" >
+                    <ListItem button alignItems="flex-start" onClick={ (e) => { this.clickSearch(e, filter.filter) } } >
                         <ListItemText primary={
                             <Fragment>
-                                <SearchIcon onClick={ (e) => { this.clickSearch(e, filter.filter) } }/>
+                                <SearchIcon />
                             </Fragment>
                         } />
-                        <ListItemText primary={"Busqueda: " + filter.filter} secondary={
-                            <React.Fragment>
+                        <ListItemText primary={"Search: " + filter.filter} secondary={
+                            <Fragment>
                                 <Typography component="span" variant="body2" color="textPrimary">
-                                    {"Cantidad de Mails encontrados: " + filter.mailsid.split(",").length}
+                                    {"Found Mails: " + filter.mailsid.split(",").length}
                                 </Typography>
-                            </React.Fragment>
+                            </Fragment>
                         }
                         />
                     </ListItem>
@@ -65,12 +58,13 @@ class FilterModalDialogComponent extends Component {
         })
     }
 
-    render() {
+    render () {
         return (
             <Dialog
+                hideBackdrop={true}
                 open={this.props.open}
                 TransitionComponent={this.getTransitionComponent()}
-                onClose={ this.handleClose }
+                onClose={ (e) => { this.handleClose(e) } }
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >

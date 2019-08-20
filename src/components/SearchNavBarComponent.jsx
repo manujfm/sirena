@@ -14,9 +14,7 @@ class SearchNavBarComponent extends Component {
 
     constructor(props){
         super(props);
-        this.onChange = this.onChange.bind(this);
-        this.sendSaveEventToFather = this.sendSaveEventToFather.bind(this);
-        this.sendSavedMailsEventToFather = this.sendSavedMailsEventToFather.bind(this)
+        
     }
 
     onChange(event){
@@ -38,13 +36,13 @@ class SearchNavBarComponent extends Component {
                 <Grid container direction={"row"} style={{padding:"4%"}}>
                     <Grid item xs={8}>
                         <SearchIcon />
-                        <InputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} onChange={ this.onChange } value={this.props.value} />
+                        <InputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} onChange={(e) =>  { this.onChange(e) }} value={this.props.value} />
                     </Grid>
                     <Grid item xs={1}>
-                        <SaveIcon  fontSize={"large"} onClick={this.sendSaveEventToFather}  />
+                        <SaveIcon  fontSize={"large"} onClick={ (e) =>  {  this.sendSaveEventToFather(e)  }}  />
                     </Grid>
                     <Grid item xs={1}>
-                        <LibraryBooksIcon fontSize={"large"} onClick={this.sendSavedMailsEventToFather} />
+                        <LibraryBooksIcon fontSize={"large"} onClick={ (e) => { this.sendSavedMailsEventToFather(e) }} />
                     </Grid>
                 </Grid>
 

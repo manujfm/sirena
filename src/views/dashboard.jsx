@@ -10,6 +10,7 @@ import LoginManager from "../controlers/LoginManager";
 import Mail from "../models/Mail";
 import Filter from "../models/Filter";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import PopUpComponent from "../components/PopUpComponent";
 import setInitialMailState from "../redux/actions/setIntialMailState";
 import filterMails from "../redux/actions/filterMails";
 import setCurrentUser from "../redux/actions/setCurrentUser";
@@ -23,7 +24,8 @@ class Dashboard extends Component {
             filter: "",
             isLogged: false,
             openFilterModal: false,
-            loading: false
+            loading: false,
+            toast: false
         };
         this.onChange = this.onChange.bind(this);
         this.getPrevSearch = this.getPrevSearch.bind(this);
@@ -108,21 +110,23 @@ class Dashboard extends Component {
         await this.setInitialResources()
     }
 
+
     render() {
         let {results, mail} = this.props;
         let data =  ( results.length > 0 ) ? results : mail;
         let username = `${this.props.user.lastname} ${this.props.user.firstname}`;
         return (
             <Fragment>
-                <Container direction="row" spacing={0}>
-                    <FilterModalDialogComponent open={this.state.openFilterModal}
+                <Grid container direction="row" spacing={0}>
+                    <PopUpComponent toast={this.state.toast}/>
+                    { this.state.openFilterModal && <FilterModalDialogComponent open={this.state.openFilterModal}
                                                 onFilterClick={ this.filterClick }
                                                 onClose={this.handleCloseModal}
-                                                filters={this.props.filters}/>
-                    <Grid item xs={3}>
+                                                filters={this.props.filters}/>} 
+                    <Grid item xs={2}>
                         <LeftSideMenuComponent userName={username}/>
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid item xs={10}>
                         <Container direction={"column"}>
                             <Grid item >
                                 <SearchNavBarComponent
@@ -133,7 +137,7 @@ class Dashboard extends Component {
                                     // disableButtons={ this.state.loading }
                                 />
                             </Grid>
-                            <Grid item >
+                            <Grid item xs={8}>
                                 { this.state.loading &&
                                     <Grid item xs={8} style={{marginTop:"90px"}}>
                                         <LinearProgress variant={"query"}  />
@@ -143,7 +147,7 @@ class Dashboard extends Component {
                             </Grid>
                         </Container>
                     </Grid>
-                </Container>
+                </Grid>
             </Fragment>
         );
     }

@@ -16,55 +16,46 @@ import Grid from '@material-ui/core/Grid';
 
 const classes = {
     drawerContainer: {
-        margin:"4%",
-        height: "40%"
+        borderRight:"1px solid #E6E6E6",
+        height: "100%"
     },
-    bigAvatar:{
+    bigAvatar: {
         margin: 10,
         width: 60,
         height: 60,
     },
-    drawer: {
-    }
+
 };
-
-const menu = {
-
-}
 
 class LeftSideMenuComponent extends Component {
 
-    __renderDrawerContent(){
+    __renderDrawerContent () {
         return (
                 <Grid container direction={"column"} alignContent={"center"} alignItems={"center"} style={classes.drawerContainer}>
-                    <Grid item >
-                        <Avatar style={classes.bigAvatar}>{this.props.userName[0]} </Avatar>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant="h6" gutterBottom>Hola, {this.props.userName}</Typography>
-                    </Grid>
-                    <Grid item>
-                        <Divider />
-                        <List>
-                            <ListItem button>
-                                <ListItemIcon> <InboxIcon /> </ListItemIcon>
-                                <ListItemText primary={"Inbox"} />
-                            </ListItem>
+                    <Avatar style={classes.bigAvatar}>{this.props.userName[0]} </Avatar>
 
-                            <ListItem button>
-                                <ListItemIcon> <MailIcon/> </ListItemIcon>
-                                <ListItemText primary={"Mail"} />
-                            </ListItem>
-
-                            <ListItem button>
-                                <ListItemIcon> <SendIcon/> </ListItemIcon>
-                                <ListItemText primary={"Sent"} />
-                            </ListItem>
-
-                    </List>
-                    </Grid>
+                    <Typography variant="h6" gutterBottom>Hi, {this.props.userName}</Typography>
 
                     <Divider />
+                    <List>
+                        <ListItem button>
+                            <ListItemIcon> <InboxIcon /> </ListItemIcon>
+                            <ListItemText primary={"Inbox"} />
+                        </ListItem>
+
+                        <ListItem button>
+                            <ListItemIcon> <MailIcon/> </ListItemIcon>
+                            <ListItemText primary={"Mail"} />
+                        </ListItem>
+
+                        <ListItem button>
+                            <ListItemIcon> <SendIcon/> </ListItemIcon>
+                            <ListItemText primary={"Sent"} />
+                        </ListItem>
+
+                    </List>
+                    <Divider />
+
                 </Grid>
 
         )
@@ -75,15 +66,15 @@ class LeftSideMenuComponent extends Component {
     render() {
         return (
             <Fragment>
-                <Hidden smUp implementation="css">
-                    <Drawer  variant="temporary" anchor="left">
-                        { this.__renderDrawerContent() }
-                    </Drawer>
-                </Hidden>
+                {/*<Hidden smUp implementation="css">*/}
+                {/*    <Drawer  variant="temporary" anchor="left">*/}
+                {/*        { this.__renderDrawerContent() }*/}
+                {/*    </Drawer>*/}
+                {/*</Hidden>*/}
                 <Hidden xsDown implementation="css">
-                    <Drawer containerstyle={{height: 'calc(100% - 80px)', top: 64}} variant="permanent" anchor="left">
+                    {/*<Drawer containerstyle={{height: 'calc(100% - 80px)', top: 64}} variant="permanent" anchor="left">*/}
                         { this.__renderDrawerContent() }
-                    </Drawer>
+                    {/*</Drawer>*/}
                 </Hidden>
 
             </Fragment>

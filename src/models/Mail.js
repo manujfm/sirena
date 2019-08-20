@@ -35,15 +35,15 @@ class Mail extends Record {
                 {
                     name: 'Subject',
                     weight: 0.4
-                },
-                {
-                    name: 'UserName',
-                    weight: 0.1
-                },
-                {
-                    name: 'UserLastName',
-                    weight: 0.1
-                },
+                }
+                // {
+                //     name: 'UserName',
+                //     weight: 0.1
+                // },
+                // {
+                //     name: 'UserLastName',
+                //     weight: 0.1
+                // },
 
             ]
         }
