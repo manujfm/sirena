@@ -4,7 +4,10 @@ import LoginManager from '../controlers/LoginManager';
 import PopUpComponent from '../components/PopUpComponent';
 import { setCurrentUser } from '../redux/actions/index';
 import { connect } from 'react-redux';
-
+/**
+ * @author Manuel Marcano
+ * @class LoginPage
+ */
 class LoginPage extends Component {
     constructor (props) {
         super(props);
@@ -34,6 +37,10 @@ class LoginPage extends Component {
         window.location = '/Dashboard';
     }
 
+    /**
+     * @description Maneja las request que no tuvieron exito, y lanza un popUp
+     * @param log {object}
+     **/
     handleBadRequest (log) {
         this.setState({
             toast: true,
@@ -42,6 +49,10 @@ class LoginPage extends Component {
         });
     }
 
+    /**
+     * @description Ejecuta el login de usuario
+     * @param payload {object} contiene el usuario y la contraseña
+     **/
     async login (payload) {
         this.setState({ loading: true });
         const login = new LoginManager(payload.user, payload.password);
@@ -66,6 +77,7 @@ class LoginPage extends Component {
     }
 }
 
+/* Redux Logic */
 const mapStateToProps = (state) => {
     return {
         user: state.user

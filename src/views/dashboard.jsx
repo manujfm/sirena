@@ -12,9 +12,11 @@ import PopUpComponent from '../components/PopUpComponent';
 import MailDisplayerDialogComponent from '../components/MailDisplayerDialogComponent';
 import LoginManager from '../controlers/LoginManager';
 import Mail from '../models/Mail';
-
 import Filter from '../models/Filter';
-
+/**
+ * @author Manuel Marcano
+ * @class Dashboard
+ */
 class Dashboard extends Component {
     constructor (props) {
         super(props);
@@ -38,6 +40,8 @@ class Dashboard extends Component {
         this.handleSelectedMail = this.handleSelectedMail.bind(this);
         this.handleCloseMailModal = this.handleCloseMailModal.bind(this);
     }
+
+    /* Handlers que manejar cambios de estados en el dashboard, no tiene documentacion ya que hacen cosas basicas */
 
     handleCloseMailModal () {
         this.setState({ selectedMail: null });
@@ -67,6 +71,11 @@ class Dashboard extends Component {
         });
     }
 
+    /**
+     * @description Cada vez que cambia filtra los mail de la dashboard
+     * filterMails despacha un evento a redux para que filtre los mails
+     * @param filter {string}
+     **/
     onChange (filter) {
         this.setLoading();
         this.setState({ filter }, () => {
@@ -81,6 +90,10 @@ class Dashboard extends Component {
         });
     }
 
+    /**
+     * @description Abre modal para ver los filtros guardados en el servidor
+     * @param e {object}
+     **/
     getPrevSearch (e) {
         this.setState({ openFilterModal: true });
     }
@@ -95,6 +108,13 @@ class Dashboard extends Component {
         this.props.filterMails(this.props.mail, this.state.filter);
     }
 
+    /**
+     * @description cuando se seleciona un filtro de los anteriores guardados este coloca como valor en el filtro actual
+     * para filtrar mails.
+     * Observacion: No se traen los mails guardados con este filtro ya que si eliminas uno no va a estar, por ende es lo mismo que
+     * filtrar los correos actuales
+     * @param filter {string}
+     **/
     filterClick (filter) {
         this.setLoading();
         this.setState({ filter }, () => {
@@ -103,6 +123,10 @@ class Dashboard extends Component {
         this.setLoading();
     }
 
+    /**
+     * @description Se encarga de guardar el filtro escrito en el servidor
+     * @param e {object} evento
+     **/
     async handleSaveSearch (e) {
         this.setLoading();
         if (this.props.results.length > 0) {
@@ -125,6 +149,12 @@ class Dashboard extends Component {
         this.setLoading();
     }
 
+    /**
+     * @description Inicia los recursois necesarios para cargar el dashboard
+     * setea el usario (si su token sigue valido)
+     * trae los mails del servidor
+     * trae los filtros guardados del servidor
+     **/
     async setInitialResources () {
         this.setLoading();
         const res = await LoginManager.isLogged();
@@ -154,12 +184,12 @@ class Dashboard extends Component {
                     message={ (this.state.errorRequest) ? this.state.errorRequest : 'Saved!!!' }
                     type={(this.state.errorRequest) ? 'error' : 'success'}/>
                 }
-                { this.state.openFilterModal && <FilterModalDialogComponent open={this.state.openFilterModal}
+                { this.state.openFilterModal && <FilterModalDialogComponent open={this.state.openFilterModal} // Hago esto porquew cuando se cerraba el modal, no se destruia el Dialog y la pantalla me quedaba bloquedada
                     onFilterClick={ this.filterClick }
                     onClose={this.handleCloseModal}
                     filters={this.props.filters}/>}
 
-                { this.state.selectedMail && <MailDisplayerDialogComponent onClose={this.handleCloseMailModal}
+                { this.state.selectedMail && <MailDisplayerDialogComponent onClose={this.handleCloseMailModal} // Hago esto porquew cuando se cerraba el modal, no se destruia el Dialog y la pantalla me quedaba bloquedada
                     mail={this.state.selectedMail}/>}
                 <Grid item xs={2}>
                     <LeftSideMenuComponent userName={username} mails={mail} open={this.state.openResponsiveDrawer} onClose={this.handleDrawer}/>
@@ -187,6 +217,7 @@ class Dashboard extends Component {
     }
 }
 
+/* Redux Logic */
 const mapStateToProps = (state) => {
     return {
         mail: state.mail,

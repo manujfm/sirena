@@ -1,68 +1,70 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este proyecto se creo con  [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Sirena App
 
-In the project directory, you can run:
+Este proyecto se basa en la obtencion y busqueda de mails de un usuario despues de logearse.
 
-### `npm start`
+## Estructura del proyecto
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* **test** Contiene todo los test
+* **components** Contiene todos lo componentes que se usan en el cliente
+* **controles** Contiene los manejadores de sesion ( Login y cookies )
+* **css** Contiene un solo archivo css parar estilos, no necesite mas.
+* **models** Contiene las entidades (clases).
+* **routes** Contiene el manjador de rutas 
+* **views** Contiene las vistas (paginas) que se renderizan el e proyecto
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Iniciar Apliación
+   
+   * Configurar el archivo server.example para poder conectarse al sevidor 
+   * Correr el comando **npm start**
 
-### `npm test`
+## Comandos de NPM
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+A parte de los comandos regulares que trae la aplicacion cuando se crea con create-react-app
+se agregaron los siguientes: 
 
-### `npm run build`
+ * **lintlog** escribe un el archivo lint_log las correcciones que require ESLINT 
+ * **lintfix** arregla las correcciones que require ESLINT
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Anotaciones
 
-### `npm run eject`
+* Los componentes no poseen documentacion ya que no tienen una logica complicada 
+(enviar eventos a padre, guardar estados... etc). A su vez, las vistas
+que son componentes, si la possen ya que manejan casi todo,
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* Para el enrutamiento de las vistas se uso [React Router]()
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Framework de css y otros componentes [Material UI]()
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* Para los popups se uso [React Toastify]()
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+* Manejo de fechas [Moment]()
 
-## Learn More
+* No se vio la necesidad de usar [Lodash]()
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* El agoritmo de busqueda de los mails esta en a libreria [Fuse](https://www.npmjs.com/package/fuse).
+    donde las ponderaciones de cada busqueda estan en la clase Mail en /Moldes en le metodo "getSearchOptions"
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* La parte de logeo con el usuario, todo información username, lastnmame, etc (datos no relevantes)
+se guardan en las cookies del navegador
 
-### Code Splitting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Propuestas de Mejora
 
-### Analyzing the Bundle Size
+* Hacer props obligatorias en los componentes con propTypes para mayor control
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+*  Los metodos de obtencion de datos (getFilters, getMails) en las clases de Model; se pudieran pasar al Record como un
+ unico metodo "getAll" que a partir del nombre de la clase haga la peticion al servidor.
+ 
+* Implementar websockets para escuchar evendos de guardado y asi actulizar el contenido del cliente
+ 
+* Se pudiera si es necesario agregar un buscador al modal de filtros, para buscar 
+el filtro que se necesite
 
-### Making a Progressive Web App
+* Hacer mas test de renderizado
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+* Las vistas pueden heredad de un window para que haya un poco mas de uniformidad, y que se maneje los 
+popUps desde ahi

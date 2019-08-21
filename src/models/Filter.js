@@ -1,5 +1,9 @@
 import Record from './Record';
 import sirena from '../app';
+/**
+ * @author Manuel Marcano
+ * @class Filter
+ */
 
 class Filter extends Record {
     constructor (props) {
@@ -10,6 +14,10 @@ class Filter extends Record {
         this.username = props.username;
     }
 
+    /**
+     * @description Salva el filtro en el servidor
+     * @return {Object}
+     **/
     async save () {
         let res = super.save();
         if (!res) return res;
@@ -18,9 +26,14 @@ class Filter extends Record {
         return res;
     }
 
+    /**
+     * @description Obtiene todos los filtros
+     * @return {Array}
+     **/
     static async getFilters () {
         const currentUser = sirena.getCurrentUser();
         const data = await sirena.request('post', 'api/getFilters', { userid: currentUser.id });
+        if (data.hasOwnProperty('ok') && !data.ok) return [];
         const filters = [];
         if (data.length > 0) {
             for (const filter of data) {

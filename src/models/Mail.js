@@ -1,5 +1,9 @@
 import Record from './Record';
 import sirena from '../app';
+/**
+ * @author Manuel Marcano
+ * @class Mail
+ */
 
 class Mail extends Record {
     constructor (props) {
@@ -15,14 +19,26 @@ class Mail extends Record {
         return `${this.UserLastName}, ${this.UserName}`;
     }
 
+    /**
+     * @description Obtiene todos los mails
+     * @return {Array}
+     **/
+
     static async getMails () {
         const data = await sirena.request('get', 'api/getMails');
+        if (data.hasOwnProperty('ok') && !data.ok) return [];
         const mails = [];
         for (const mail of data) {
             mails.push(new Mail(mail));
         }
         return mails;
     }
+
+    /**
+     * @description Obtiene las opciines de busqueda de mails por ponderacion
+     * Mas informacion: https://www.npmjs.com/package/fuse
+     * @return {Object}
+     **/
 
     static getSearchOptions () {
         return {
