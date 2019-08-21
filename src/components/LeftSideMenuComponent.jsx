@@ -14,6 +14,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
+import { Link as RouterLink } from 'react-router-dom';
 
 
 const classes = {
@@ -41,17 +42,25 @@ class LeftSideMenuComponent extends Component {
                     <Divider />
                     <List>
                         <ListItem button>
-                            <ListItemIcon> <InboxIcon /> </ListItemIcon>
-                            <ListItemText primary={"Inbox"} />
+                            <RouterLink to={"/Dashboard"}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                            </RouterLink>
+                            <ListItemText primary={`Inbox (${this.props.mails.length})`} />
                         </ListItem>
 
                         <ListItem button>
-                            <ListItemIcon> <MailIcon/> </ListItemIcon>
+                            <ListItemIcon>
+                                <MailIcon/>
+                            </ListItemIcon>
                             <ListItemText primary={"Mail"} />
                         </ListItem>
 
                         <ListItem button>
-                            <ListItemIcon> <SendIcon/> </ListItemIcon>
+                            <ListItemIcon>
+                                <SendIcon/>
+                            </ListItemIcon>
                             <ListItemText primary={"Sent"} />
                         </ListItem>
 

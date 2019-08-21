@@ -7,7 +7,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LoadingComponent from "./LoadingComponent";
 
 
 const styles = {
@@ -15,7 +15,7 @@ const styles = {
         marginTop:"10%"
     },
     card: {
-        minWidth: 500,
+        minWidth: 430,
     },
     bullet: {
         display: 'inline-block',
@@ -110,8 +110,8 @@ class LoginComponent extends Component {
     render() {
         const { error } = this.state;
         return (
-           <Grid container direction="column" justify="center"  alignItems={"center"} style={styles.loginContainer} >
-               <Grid item xs={8} sm={8}>
+           <Grid container direction="column" justify="center" alignContent={"center"}  alignItems={"center"} style={styles.loginContainer} >
+               <Grid item xs={12} >
                    <Card style={styles.card} >
                        <CardContent>
                             <Grid item xs={12}>
@@ -150,11 +150,9 @@ class LoginComponent extends Component {
                                         Login
                                     </Button>
                                 </Grid>
-                                { this.props.loading &&
-                                    <Grid item xs={8}>
-                                        <LinearProgress variant="query"/>
-                                    </Grid>
-                                }
+
+                                <LoadingComponent loading={this.props.loading} grid={8} />
+
                             </Grid>
                        </CardActions>
                    </Card>

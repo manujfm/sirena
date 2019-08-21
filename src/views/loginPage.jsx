@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import LoginComponent from "../components/LoginComponent"
 import LoginManager from "../controlers/LoginManager";
 import setCurrentUser from "../redux/actions/setCurrentUser";
@@ -40,9 +40,9 @@ class LoginPage extends Component {
 
     render() {
         return (
-            <div>
+            <Fragment>
                 <LoginComponent login={this.login} loading={this.state.isLoading}/>
-            </div>
+            </Fragment>
         );
     }
 

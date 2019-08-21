@@ -1,0 +1,8 @@
+.loading{
+    background-color: #E6E6E6 !important;
+}
+
+.loading > div {
+    background-color: grey !important;
+}
+

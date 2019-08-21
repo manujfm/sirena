@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
@@ -6,19 +6,19 @@ import LeftSideMenuComponent from "../components/LeftSideMenuComponent"
 import SearchNavBarComponent from "../components/SearchNavBarComponent"
 import FilterModalDialogComponent from "../components/FilterModalDialogComponent"
 import MailBoxComponent from "../components/MailBoxComponent"
+import LoadingComponent from "../components/LoadingComponent";
+import PopUpComponent from "../components/PopUpComponent";
+import MailDisplayerDialogComponent from "../components/MailDisplayerDialogComponent";
 import LoginManager from "../controlers/LoginManager";
 import Mail from "../models/Mail";
 import Filter from "../models/Filter";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import PopUpComponent from "../components/PopUpComponent";
 import setInitialMailState from "../redux/actions/setIntialMailState";
 import filterMails from "../redux/actions/filterMails";
 import setCurrentUser from "../redux/actions/setCurrentUser";
 import setInitialFilters from "../redux/actions/setInitialFilters";
-
 class Dashboard extends Component {
 
-    constructor(props){
+    constructor (props) {
         super(props);
         this.state = {
             filter: "",
@@ -26,7 +26,8 @@ class Dashboard extends Component {
             openFilterModal: false,
             loading: false,
             toast: false,
-            openResponsiveDrawer: false
+            openResponsiveDrawer: false,
+            selectedMail: null
         };
         this.onChange = this.onChange.bind(this);
         this.getPrevSearch = this.getPrevSearch.bind(this);
@@ -34,10 +35,28 @@ class Dashboard extends Component {
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.filterClick = this.filterClick.bind(this);
         this.handleDrawer = this.handleDrawer.bind(this);
+        this.handleToast = this.handleToast.bind(this);
+        this.handleSelectedMail = this.handleSelectedMail.bind(this);
+        this.handleCloseMailModal = this.handleCloseMailModal.bind(this);
+    }
+
+    handleCloseMailModal(){
+        this.setState({selectedMail: null})
+    }
+
+    handleSelectedMail (e, id) {
+        let mail = this.props.mail.find( (mail) => { return mail.id === id }) ;
+        mail = (typeof mail === "undefined") ? {} : mail;
+        this.setState({ selectedMail: mail })
+    }
+
+    handleToast(){
+        this.setState( (oldState) => {
+            return  {toast: !oldState.toast}
+        })
     }
 
     handleDrawer(){
-        console.log("AAAAAAAAAAAAAAAAA")
         this.setState( (oldState) => {
             return  {openResponsiveDrawer: !oldState.openResponsiveDrawer}
         })
@@ -96,7 +115,8 @@ class Dashboard extends Component {
             if ( !res.ok ) this.handleBadRequest()
         }
         await this.props.setInitialFilters(await Filter.getFilters());
-        this.setState({filter:""})
+        this.setState({ filter: "" })
+        this.handleToast()
         this.setLoading();
     }
 
@@ -125,13 +145,16 @@ class Dashboard extends Component {
         let username = `${this.props.user.lastname} ${this.props.user.firstname}`;
         return (
                 <Grid container direction="row" >
-                    <PopUpComponent toast={this.state.toast}/>
+                    {this.state.toast && <PopUpComponent toast={this.state.toast} onClose={this.handleToast}  message={"Saved!"} type={"success"}/>}
                     { this.state.openFilterModal && <FilterModalDialogComponent open={this.state.openFilterModal}
                                                                                 onFilterClick={ this.filterClick }
                                                                                 onClose={this.handleCloseModal}
                                                                                 filters={this.props.filters}/>}
+
+                    { this.state.selectedMail && <MailDisplayerDialogComponent onClose={this.handleCloseMailModal}
+                                                                                mail={this.state.selectedMail}/>}
                     <Grid item xs={2}>
-                        <LeftSideMenuComponent userName={username} open={this.state.openResponsiveDrawer} onClose={this.handleDrawer}/>
+                        <LeftSideMenuComponent userName={username} mails={mail} open={this.state.openResponsiveDrawer} onClose={this.handleDrawer}/>
                     </Grid>
                     <Grid item xs={12} lg={8}>
                         <Container direction={"column"}>
@@ -142,16 +165,12 @@ class Dashboard extends Component {
                                     saveSearch={this.handleSaveSearch}
                                     prevSearch={ this.getPrevSearch }
                                     openDrawer={ this.handleDrawer }
-                                    // disableButtons={ this.state.loading }
+                                    disableButtons={ this.state.loading }
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                { this.state.loading &&
-                                    <Grid item xs={12} style={{marginTop:"90px"}}>
-                                        <LinearProgress variant={"query"}  />
-                                    </Grid>
-                                }
-                                { !this.state.loading && <MailBoxComponent mails={data}/> }
+                                <LoadingComponent loading={this.state.loading } grid={12}/>
+                                { !this.state.loading && <MailBoxComponent mails={data} selectedMail={this.handleSelectedMail}/> }
                             </Grid>
                         </Container>
                     </Grid>
