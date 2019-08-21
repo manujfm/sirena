@@ -54,7 +54,7 @@ class LoginManager {
                 return {ok: true, userinfo: loginInfo.userInfo }
             }
         }
-        return {ok:false, "error": "cant log"}
+        return {ok: false, "error": "Upps!! We are experimenting with a server error, try later"}
     }
 
 

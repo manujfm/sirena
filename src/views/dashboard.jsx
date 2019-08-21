@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'
+import { setInitialMailState, filterMails, setCurrentUser, setInitialFilters } from "../redux/actions/index"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 import LeftSideMenuComponent from "../components/LeftSideMenuComponent"
@@ -11,11 +12,9 @@ import PopUpComponent from "../components/PopUpComponent";
 import MailDisplayerDialogComponent from "../components/MailDisplayerDialogComponent";
 import LoginManager from "../controlers/LoginManager";
 import Mail from "../models/Mail";
+
 import Filter from "../models/Filter";
-import setInitialMailState from "../redux/actions/setIntialMailState";
-import filterMails from "../redux/actions/filterMails";
-import setCurrentUser from "../redux/actions/setCurrentUser";
-import setInitialFilters from "../redux/actions/setInitialFilters";
+
 class Dashboard extends Component {
 
     constructor (props) {
@@ -27,7 +26,8 @@ class Dashboard extends Component {
             loading: false,
             toast: false,
             openResponsiveDrawer: false,
-            selectedMail: null
+            selectedMail: null,
+            errorRequest: null
         };
         this.onChange = this.onChange.bind(this);
         this.getPrevSearch = this.getPrevSearch.bind(this);
@@ -52,7 +52,7 @@ class Dashboard extends Component {
 
     handleToast(){
         this.setState( (oldState) => {
-            return  {toast: !oldState.toast}
+            return  {toast: !oldState.toast, errorRequest: null}
         })
     }
 
@@ -76,7 +76,11 @@ class Dashboard extends Component {
         this.setLoading()
     }
 
-    handleBadRequest(){}
+    handleBadRequest(res){
+        this.setState({
+            errorRequest: res.error
+        })
+    }
 
     getPrevSearch(e){
         this.setState({openFilterModal: true})
@@ -112,10 +116,13 @@ class Dashboard extends Component {
             obj.mailsid = this.props.results.map( (mail) =>  mail.id ).join(",");
             let filter = new Filter(obj);
             let res = await filter.save();
-            if ( !res.ok ) this.handleBadRequest()
+            if ( !res.ok ) {
+                this.handleBadRequest(res);
+                return
+            }
         }
         await this.props.setInitialFilters(await Filter.getFilters());
-        this.setState({ filter: "" })
+        this.setState({ filter: "" });
         this.handleToast()
         this.setLoading();
     }
@@ -145,7 +152,11 @@ class Dashboard extends Component {
         let username = `${this.props.user.lastname} ${this.props.user.firstname}`;
         return (
                 <Grid container direction="row" >
-                    {this.state.toast && <PopUpComponent toast={this.state.toast} onClose={this.handleToast}  message={"Saved!"} type={"success"}/>}
+                    { (this.state.toast || this.state.errorRequest)  && <PopUpComponent toast={this.state.toast}
+                                                                                        onClose={this.handleToast}
+                                                                                        message={ (this.state.errorRequest) ? this.state.errorRequest : "Saved!!!" }
+                                                                                        type={(this.state.errorRequest) ? "error" : "success"}/>
+                    }
                     { this.state.openFilterModal && <FilterModalDialogComponent open={this.state.openFilterModal}
                                                                                 onFilterClick={ this.filterClick }
                                                                                 onClose={this.handleCloseModal}

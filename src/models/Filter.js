@@ -14,7 +14,9 @@ class Filter extends Record {
     async save() {
         let res = super.save();
         if ( !res ) return res;
-        return sirena.request("post", "api/saveFilter", this)
+        res = await sirena.request("post", "api/saveFilter", this)
+        if ( !res.ok ) return {ok: false, error:"Upps!! We are experimenting with a server error, try later"}
+        return res
     }
 
     static async getFilters(){

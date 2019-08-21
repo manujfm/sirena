@@ -15,7 +15,7 @@ class PopUpComponent extends Component {
         )
     }
 
-    async componentWillMount () {
+    async componentDidMount () {
         toast( this.__renderMessage(),
             {
                 type: this.props.type,

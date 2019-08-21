@@ -35,10 +35,10 @@ class MailDisplayerDialogComponent extends Component {
             >
                 <DialogTitle id="alert-dialog-title">
                     <Grid container  direction={"row"}>
-                        <Grid item xs={2}>
+                        <Grid item xs={12} md={2}>
                             <Avatar style={{margin: 10, width: 60, height: 60}}>{ mail.getFullNameUser()[0]} </Avatar>
                         </Grid>
-                        <Grid item xs={10} style={{paddingTop:"5%"}}>
+                        <Grid item xs={12} md={10} style={{paddingTop:"5%"}}>
                             <Typography variant={"h4"}>{ mail.getFullNameUser() }</Typography>
                         </Grid>
                     </Grid>
