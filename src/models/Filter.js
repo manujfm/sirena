@@ -20,7 +20,8 @@ class Filter extends Record {
     }
 
     static async getFilters(){
-        let data = await sirena.request("get", "api/getFilters");
+        let currentUser = sirena.getCurrentUser();
+        let data = await sirena.request("post", "api/getFilters", { userid: currentUser.id } );
         let filters = [];
         if ( data.length > 0 )
         for ( let filter of data ){

@@ -3,7 +3,7 @@ import server from "./server.example"
 import LoginManager from "./controlers/LoginManager";
 let sirena = {};
 
-let getHeaders = function (){
+let getHeaders = function () {
     let obj = {};
     obj["headers"] = {};
     obj["headers"]["Content-Type"] = 'application/json';
@@ -12,11 +12,13 @@ let getHeaders = function (){
         obj["headers"]["Authorization"] = `Bearer ${tok}`
     }
     return obj
-};
+}
 
+sirena.getCurrentUser = function () {
+    return LoginManager.getUserInfo()
+}
 
-
-sirena.request = async function(type, endpoint, payload={}) {
+sirena.request = async function (type, endpoint, payload = {}) {
     let url = `${server.host}:${server.port}/${endpoint}`;
     try {
         let res = await axios.request({
@@ -29,7 +31,7 @@ sirena.request = async function(type, endpoint, payload={}) {
     } catch (e) {
         return {ok:false, error:e}
     }
-};
+}
 
 
 
