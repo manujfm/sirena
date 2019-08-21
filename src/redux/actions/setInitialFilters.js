@@ -1,10 +1,9 @@
-export const type = "setInitialFilters";
+export const type = 'setInitialFilters';
 const setInitialFilters = function (array) {
     return {
         type,
         payload: array
-    }
+    };
 };
 
-
-export default setInitialFilters
+export default setInitialFilters;

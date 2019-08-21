@@ -1,39 +1,36 @@
-import axios from "axios";
-import server from "./server.example"
-import LoginManager from "./controlers/LoginManager";
-let sirena = {};
+import axios from 'axios';
+import server from './server.example';
+import LoginManager from './controlers/LoginManager';
+const sirena = {};
 
-let getHeaders = function () {
-    let obj = {};
-    obj["headers"] = {};
-    obj["headers"]["Content-Type"] = 'application/json';
-    let tok = LoginManager.getSessionID();
-    if ( tok ) {
-        obj["headers"]["Authorization"] = `Bearer ${tok}`
+const getHeaders = function () {
+    const obj = {};
+    obj['headers'] = {};
+    obj['headers']['Content-Type'] = 'application/json';
+    const tok = LoginManager.getSessionID();
+    if (tok) {
+        obj['headers']['Authorization'] = `Bearer ${tok}`;
     }
-    return obj
-}
+    return obj;
+};
 
 sirena.getCurrentUser = function () {
-    return LoginManager.getUserInfo()
-}
+    return LoginManager.getUserInfo();
+};
 
 sirena.request = async function (type, endpoint, payload = {}) {
-    let url = `${server.host}:${server.port}/${endpoint}`;
+    const url = `${server.host}:${server.port}/${endpoint}`;
     try {
-        let res = await axios.request({
-            method:type,
+        const res = await axios.request({
+            method: type,
             url,
             data: payload,
             headers: getHeaders().headers
         });
-        return res.data
+        return res.data;
     } catch (e) {
-        return {ok:false, error:e}
+        return { ok: false, error: e };
     }
-}
+};
 
-
-
-
-export default sirena
+export default sirena;

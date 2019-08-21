@@ -4,9 +4,11 @@
 /node_modules
 /.pnp
 .pnp.js
+package-lock.json
 
 # testing
 /coverage
+lint_log.txt
 
 # production
 /build
@@ -17,6 +19,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.idea
 
 npm-debug.log*
 yarn-debug.log*

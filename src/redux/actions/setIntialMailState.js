@@ -1,10 +1,9 @@
-export const type = "setInitialMailState";
-const setInitialMailState = function ( array) {
+export const type = 'setInitialMailState';
+const setInitialMailState = function (array) {
     return {
         type,
         payload: array
-    }
+    };
 };
 
-
-export default setInitialMailState
+export default setInitialMailState;

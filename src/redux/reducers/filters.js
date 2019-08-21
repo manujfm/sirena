@@ -1,16 +1,14 @@
-import { type as setInitialFilters} from "../actions/setInitialFilters";
-let defaultState = [];
+import { type as setInitialFilters } from '../actions/setInitialFilters';
+const defaultState = [];
 
-
-const redu = function(state=defaultState, {type, payload}){
+const redu = function (state = defaultState, { type, payload }) {
     switch (type) {
-        case setInitialFilters :
-            state = payload;
-            return state;
-        default:
-            return state;
+    case setInitialFilters :
+        state = payload;
+        return state;
+    default:
+        return state;
     }
-
 };
 
 export default redu;

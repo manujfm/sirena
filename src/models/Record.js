@@ -1,11 +1,8 @@
 
- class Record {
-
-    async save(){
-        return true
+class Record {
+    async save () {
+        return true;
     }
+}
 
-
- }
-
- export default Record
+export default Record;

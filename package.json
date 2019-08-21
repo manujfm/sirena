@@ -24,7 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src/components/**"
+    "lintlog": "eslint ./src/**/* > lint_log.txt",
+    "lintfix": "eslint --fix ./src/**/*"
   },
   "eslintConfig": {
     "extends": "react-app"

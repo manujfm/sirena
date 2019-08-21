@@ -1,8 +1,8 @@
-import { createStore, combineReducers } from 'redux'
-import mail from './reducers/mail'
-import user from './reducers/user'
-import results from './reducers/results'
-import filters from './reducers/filters'
+import { createStore, combineReducers } from 'redux';
+import mail from './reducers/mail';
+import user from './reducers/user';
+import results from './reducers/results';
+import filters from './reducers/filters';
 
 const reducers = combineReducers({
     mail,
@@ -19,4 +19,4 @@ const store = createStore(
 );
 /* eslint-enable */
 
-export default  store
+export default store;

@@ -1,11 +1,11 @@
-import setInitialMailState from "./setIntialMailState";
-import filterMails from "./filterMails";
-import setCurrentUser from "./setCurrentUser";
-import setInitialFilters from "./setInitialFilters";
+import setInitialMailState from './setIntialMailState';
+import filterMails from './filterMails';
+import setCurrentUser from './setCurrentUser';
+import setInitialFilters from './setInitialFilters';
 
-export  {
+export {
     setCurrentUser,
     setInitialMailState,
     setInitialFilters,
     filterMails
-}
+};

@@ -1,14 +1,12 @@
-import React, {Component, Fragment} from 'react';
-import LoginComponent from "../components/LoginComponent"
-import LoginManager from "../controlers/LoginManager";
-import { setCurrentUser } from "../redux/actions/index"
-import { connect } from "react-redux";
-import PopUpComponent from "../components/PopUpComponent";
-
+import React, { Component, Fragment } from 'react';
+import LoginComponent from '../components/LoginComponent';
+import LoginManager from '../controlers/LoginManager';
+import PopUpComponent from '../components/PopUpComponent';
+import { setCurrentUser } from '../redux/actions/index';
+import { connect } from 'react-redux';
 
 class LoginPage extends Component {
-
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
             loading: false,
@@ -16,66 +14,62 @@ class LoginPage extends Component {
             errorMessage: ''
         };
         this.login = this.login.bind(this);
-        this.handleToast = this.handleToast.bind(this)
+        this.handleToast = this.handleToast.bind(this);
     }
 
-    handleToast(){
-        this.setState( (prevState) => {
-            return {toast: !prevState}
-        })
-
+    handleToast () {
+        this.setState((prevState) => {
+            return { toast: !prevState };
+        });
     }
 
-    async componentDidMount() {
-        let isLogged = await LoginManager.isLogged();
+    async componentDidMount () {
+        const isLogged = await LoginManager.isLogged();
         if (isLogged) {
-            this.redirect()
+            this.redirect();
         }
     }
 
-    redirect() {
-        window.location = "/Dashboard"
+    redirect () {
+        window.location = '/Dashboard';
     }
 
-    handleBadRequest(log){
+    handleBadRequest (log) {
         this.setState({
             toast: true,
             errorMessage: log.error,
             loading: false
-        })
+        });
     }
 
-    async login(payload){
-        this.setState({loading: true });
-        let login =  new LoginManager (payload.user, payload.password);
-        let log = await login.login();
-        if ( !log.ok ){
+    async login (payload) {
+        this.setState({ loading: true });
+        const login = new LoginManager(payload.user, payload.password);
+        const log = await login.login();
+        if (!log.ok) {
             this.handleBadRequest(log);
-            return
+            return;
         }
 
         this.props.setCurrentUser(log.userinfo);
         this.redirect();
-        this.setState({loading: false});
+        this.setState({ loading: false });
     }
 
-
-    render() {
+    render () {
         return (
             <Fragment>
-                {this.state.toast && <PopUpComponent toast={this.state.toast} onClose={this.handleToast}  message={this.state.errorMessage} type={"error"}/>}
+                {this.state.toast && <PopUpComponent toast={this.state.toast} onClose={this.handleToast} message={this.state.errorMessage} type={'error'}/>}
                 <LoginComponent login={this.login} loading={this.state.loading}/>
             </Fragment>
         );
     }
-
-
 }
 
-const mapStateToProps = ( state ) => {
+const mapStateToProps = (state) => {
     return {
         user: state.user
-    }
+    };
 };
 const mapDispatchToProps = {
     setCurrentUser

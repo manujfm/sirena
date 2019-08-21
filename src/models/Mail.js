@@ -1,31 +1,30 @@
-import Record from "./Record";
-import sirena from "../app";
+import Record from './Record';
+import sirena from '../app';
 
 class Mail extends Record {
-
-    constructor(props){
+    constructor (props) {
         super(props);
         this.Message = props.message;
         this.id = props.id;
-        this.Subject = ( props.hasOwnProperty("subject") ) ? props.subject : "-";
+        this.Subject = (props.hasOwnProperty('subject')) ? props.subject : '-';
         this.UserName = props.firstName;
         this.UserLastName = props.lastName;
     }
 
-    getFullNameUser() {
-        return `${this.UserLastName}, ${this.UserName}`
+    getFullNameUser () {
+        return `${this.UserLastName}, ${this.UserName}`;
     }
 
-    static async getMails(){
-        let data = await sirena.request("get", "api/getMails");
-        let mails = [];
-        for ( let mail of data ){
-            mails.push(new Mail(mail))
+    static async getMails () {
+        const data = await sirena.request('get', 'api/getMails');
+        const mails = [];
+        for (const mail of data) {
+            mails.push(new Mail(mail));
         }
-        return mails
+        return mails;
     }
 
-    static getSearchOptions(){
+    static getSearchOptions () {
         return {
             keys: [
                 {
@@ -46,9 +45,8 @@ class Mail extends Record {
                 // },
 
             ]
-        }
+        };
     }
-
 }
 
-export default Mail
+export default Mail;

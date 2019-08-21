@@ -22,6 +22,10 @@ module.exports = {
   ],
   rules: {
       "eqeqeq": "off",
+      "indent": ["error", 4],
+      "react/jsx-indent": ["error", 4],
+      "react/jsx-indent-props": ["error", 4],
+    semi: [2, "always", { "omitLastInOneLineBlock": true}]
 
   }
 };
