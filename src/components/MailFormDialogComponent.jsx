@@ -51,7 +51,7 @@ class MailFormDialogComponent extends Component {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    <Typography variant={'h5'}>New Mail</Typography>
+                    New Mail
                 </DialogTitle>
                 <DialogContent >
                     <Grid container direction={'column'}>
