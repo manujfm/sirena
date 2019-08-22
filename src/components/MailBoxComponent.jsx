@@ -32,12 +32,12 @@ class MailBoxComponent extends Component {
             return (
                 <Fragment key={key}>
                     <ListItem button alignItems="flex-start" onClick={ (e) => { this.sendMailIdToParent(e, mail.id) } }>
-                        <ListItemText primary={mail.Subject} secondary={
+                        <ListItemText primary={mail.subject} secondary={
                             <Fragment>
                                 <Typography component="span" variant="body2" color="textPrimary">
                                     {mail.getFullNameUser()}
                                 </Typography>
-                                { ' - ' + mail.Message}
+                                { ' - ' + mail.message}
                             </Fragment>
                         }
                         />

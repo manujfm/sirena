@@ -41,8 +41,8 @@ class MailDisplayerDialogComponent extends Component {
                     </Grid>
                 </DialogTitle>
                 <DialogContent >
-                    <Typography variant={'h5'}>{mail.Subject}</Typography>
-                    <Typography variant={'body2'}>{mail.Message}</Typography>
+                    <Typography variant={'h5'}>{mail.subject}</Typography>
+                    <Typography variant={'body2'}>{mail.message}</Typography>
                 </DialogContent>
             </Dialog>
 

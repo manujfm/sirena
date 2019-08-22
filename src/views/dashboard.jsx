@@ -10,6 +10,7 @@ import MailBoxComponent from '../components/MailBoxComponent';
 import LoadingComponent from '../components/LoadingComponent';
 import PopUpComponent from '../components/PopUpComponent';
 import MailDisplayerDialogComponent from '../components/MailDisplayerDialogComponent';
+import MailFormDialogComponent from '../components/MailFormDialogComponent';
 import LoginManager from '../controlers/LoginManager';
 import Mail from '../models/Mail';
 import Filter from '../models/Filter';
@@ -28,7 +29,9 @@ class Dashboard extends Component {
             toast: false,
             openResponsiveDrawer: false,
             selectedMail: null,
-            errorRequest: null
+            errorRequest: null,
+            openMailForm: false,
+            showSentMails: false
         };
         this.onChange = this.onChange.bind(this);
         this.getPrevSearch = this.getPrevSearch.bind(this);
@@ -39,6 +42,21 @@ class Dashboard extends Component {
         this.handleToast = this.handleToast.bind(this);
         this.handleSelectedMail = this.handleSelectedMail.bind(this);
         this.handleCloseMailModal = this.handleCloseMailModal.bind(this);
+        this.handleMailForm = this.handleMailForm.bind(this);
+        this.handleSaveMail = this.handleSaveMail.bind(this);
+        this.openSentMails = this.openSentMails.bind(this);
+    }
+
+    openSentMails () {
+        this.setState((oldState) => {
+            return { showSentMails: !oldState.showSentMails };
+        });
+    }
+
+    handleMailForm () {
+        this.setState((oldState) => {
+            return { openMailForm: !oldState.openMailForm };
+        });
     }
 
     /* Handlers que manejar cambios de estados en el dashboard, no tiene documentacion ya que hacen cosas basicas */
@@ -149,6 +167,21 @@ class Dashboard extends Component {
         this.setLoading();
     }
 
+    async handleSaveMail (info) {
+        info.type = Mail.TYPE_SENT;
+        this.handleMailForm();
+        this.setLoading();
+        const mail = new Mail(info);
+        const res = await mail.save();
+        if (!res.ok) {
+            this.handleBadRequest(res);
+            return;
+        }
+        this.props.setInitialMailState(await Mail.getMails());
+        this.handleToast();
+        this.setLoading();
+    }
+
     /**
      * @description Inicia los recursois necesarios para cargar el dashboard
      * setea el usario (si su token sigue valido)
@@ -175,7 +208,10 @@ class Dashboard extends Component {
 
     render () {
         const { results, mail } = this.props;
-        const data = (results.length > 0) ? results : mail;
+        const sentData = mail.filter((senMa) => { return senMa.type === Mail.TYPE_SENT });
+
+        let data = (results.length > 0) ? results : mail;
+        if (this.state.showSentMails) { data = data.filter((singlMail) => { return singlMail.type === Mail.TYPE_SENT }) }
         const username = `${this.props.user.lastname} ${this.props.user.firstname}`;
         return (
             <Grid container direction="row" >
@@ -191,8 +227,16 @@ class Dashboard extends Component {
 
                 { this.state.selectedMail && <MailDisplayerDialogComponent onClose={this.handleCloseMailModal} // Hago esto porquew cuando se cerraba el modal, no se destruia el Dialog y la pantalla me quedaba bloquedada
                     mail={this.state.selectedMail}/>}
+
+                { this.state.openMailForm && <MailFormDialogComponent onClose={this.handleMailForm} save={this.handleSaveMail}/>}
+
                 <Grid item xs={2}>
-                    <LeftSideMenuComponent userName={username} mails={mail} open={this.state.openResponsiveDrawer} onClose={this.handleDrawer}/>
+                    <LeftSideMenuComponent userName={username} mails={mail}
+                        changeSeleted={this.state.showSentMails}
+                        sentMails={sentData}
+                        open={this.state.openResponsiveDrawer}
+                        onOpenSent={this.openSentMails}
+                        onClose={this.handleDrawer}/>
                 </Grid>
                 <Grid item xs={12} lg={8}>
                     <Container direction={'column'}>
@@ -203,6 +247,7 @@ class Dashboard extends Component {
                                 saveSearch={this.handleSaveSearch}
                                 prevSearch={ this.getPrevSearch }
                                 openDrawer={ this.handleDrawer }
+                                openMailForm={ this.handleMailForm }
                                 disableButtons={ this.state.loading }
                             />
                         </Grid>

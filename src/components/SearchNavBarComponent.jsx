@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import SaveIcon from '@material-ui/icons/Save';
+import Add from '@material-ui/icons/Add';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import MenuIcon from '@material-ui/icons/Menu';
 import Grid from '@material-ui/core/Grid';
@@ -39,6 +40,10 @@ class SearchNavBarComponent extends Component {
         this.props.prevSearch(e);
     }
 
+    sendOpenMailForm (e) {
+        this.props.openMailForm(e);
+    }
+
     render () {
         return (
             <Grid container direction={'row'} style={{ padding: '4%' }} >
@@ -70,23 +75,32 @@ class SearchNavBarComponent extends Component {
                 </Grid>
                 <Grid item xs={2} md={1}>
                     <Tooltip title="Save Filter" placement="left">
-                        <Fragment>
+                        <div>
                             <IconButton disabled={this.props.disableButtons} style={style.buttonIcon} onClick={ (e) => { this.sendSaveEventToFather(e) }}>
                                 <SaveIcon style={style.icon} fontSize={'large'} />
                             </IconButton>
-                        </Fragment>
+                        </div>
                     </Tooltip>
 
                 </Grid>
                 <Grid item xs={2} md={1}>
                     <Tooltip title="See previous filters" placement="left">
-                        <Fragment>
+                        <div>
                             <IconButton disabled={this.props.disableButtons} style={style.buttonIcon} onClick={ (e) => { this.sendSavedMailsEventToFather(e) }} >
                                 <LibraryBooksIcon style={style.icon} fontSize={'large'}/>
                             </IconButton>
-                        </Fragment>
+                        </div>
                     </Tooltip>
+                </Grid>
 
+                <Grid item xs={12} md={1}>
+                    <Tooltip title="New Mail" placement="left">
+                        <div>
+                            <IconButton disabled={this.props.disableButtons} style={style.buttonIcon} onClick={ (e) => { this.sendOpenMailForm(e) }} >
+                                <Add style={style.icon} fontSize={'large'}/>
+                            </IconButton>
+                        </div>
+                    </Tooltip>
                 </Grid>
             </Grid>
 

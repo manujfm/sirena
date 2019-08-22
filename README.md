@@ -68,3 +68,5 @@ el filtro que se necesite
 
 * Las vistas pueden heredad de un window para que haya un poco mas de uniformidad, y que se maneje los 
 popUps desde ahi
+
+*Interface para crear usuarios

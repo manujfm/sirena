@@ -14,7 +14,6 @@ import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { Link as RouterLink } from 'react-router-dom';
 
 const classes = {
     drawerContainer: {
@@ -30,6 +29,12 @@ const classes = {
 };
 
 class LeftSideMenuComponent extends Component {
+
+    openSentMails(){
+        this.props.onOpenSent()
+    }
+
+
     __renderDrawerContent () {
         return (
             <Grid container direction={'column'} alignContent={'center'} alignItems={'center'} style={classes.drawerContainer}>
@@ -39,27 +44,23 @@ class LeftSideMenuComponent extends Component {
 
                 <Divider />
                 <List>
-                    <ListItem button>
-                        <RouterLink to={'/Dashboard'}>
-                            <ListItemIcon>
-                                <InboxIcon />
-                            </ListItemIcon>
-                        </RouterLink>
+                    <ListItem button selected={!this.props.changeSeleted} onClick={ () => {this.openSentMails()}}>
+                        <ListItemIcon>
+                            <InboxIcon />
+                        </ListItemIcon>
                         <ListItemText primary={`Inbox (${this.props.mails.length})`} />
                     </ListItem>
-
+                    <ListItem button selected={this.props.changeSeleted}   onClick={ () => {this.openSentMails()}}>
+                        <ListItemIcon>
+                            <SendIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary={`Sent (${this.props.sentMails.length})`} />
+                    </ListItem>
                     <ListItem button>
                         <ListItemIcon>
                             <MailIcon/>
                         </ListItemIcon>
                         <ListItemText primary={'Mail'} />
-                    </ListItem>
-
-                    <ListItem button>
-                        <ListItemIcon>
-                            <SendIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={'Sent'} />
                     </ListItem>
 
                 </List>

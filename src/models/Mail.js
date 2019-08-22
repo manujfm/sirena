@@ -8,15 +8,28 @@ import sirena from '../app';
 class Mail extends Record {
     constructor (props) {
         super(props);
-        this.Message = props.message;
+        this.message = props.message;
         this.id = props.id;
-        this.Subject = (props.hasOwnProperty('subject')) ? props.subject : '-';
-        this.UserName = props.firstName;
-        this.UserLastName = props.lastName;
+        this.subject = (props.hasOwnProperty('subject')) ? props.subject : '-';
+        this.firstName = props.firstName;
+        this.lastName = props.lastName;
+        this.type = props.type || Mail.TYPE_RECEIVED;
     }
 
     getFullNameUser () {
-        return `${this.UserLastName}, ${this.UserName}`;
+        return `${this.lastName}, ${this.firstName}`;
+    }
+
+    /**
+     * @description Salva el Mail en el servidor
+     * @return {Object}
+     **/
+    async save () {
+        let res = super.save();
+        if (!res) return res;
+        res = await sirena.request('post', 'api/saveMails', [this]);
+        if (!res.ok) return { ok: false, error: 'Upps!! We are experimenting with a server error, try later' };
+        return res;
     }
 
     /**
@@ -44,11 +57,11 @@ class Mail extends Record {
         return {
             keys: [
                 {
-                    name: 'Message',
+                    name: 'message',
                     weight: 0.4
                 },
                 {
-                    name: 'Subject',
+                    name: 'subject',
                     weight: 0.4
                 }
                 // {
@@ -65,4 +78,6 @@ class Mail extends Record {
     }
 }
 
+Mail.TYPE_RECEIVED = 1;
+Mail.TYPE_SENT = 2;
 export default Mail;
