@@ -167,6 +167,10 @@ class Dashboard extends Component {
         this.setLoading();
     }
 
+    /**
+     * @description maneja el guardado del mails
+     * @param info {Object} info del mail
+     **/
     async handleSaveMail (info) {
         info.type = Mail.TYPE_SENT;
         this.handleMailForm();
@@ -183,7 +187,7 @@ class Dashboard extends Component {
     }
 
     /**
-     * @description Inicia los recursois necesarios para cargar el dashboard
+     * @description Inicia los recursos necesarios para cargar el dashboard
      * setea el usario (si su token sigue valido)
      * trae los mails del servidor
      * trae los filtros guardados del servidor
@@ -208,10 +212,10 @@ class Dashboard extends Component {
 
     render () {
         const { results, mail } = this.props;
-        const sentData = mail.filter((senMa) => { return senMa.type === Mail.TYPE_SENT });
+        const sentData = mail.filter((senMa) => { return senMa.type === Mail.TYPE_SENT }); // Obtengo los mails enviados
 
         let data = (results.length > 0) ? results : mail;
-        if (this.state.showSentMails) { data = data.filter((singlMail) => { return singlMail.type === Mail.TYPE_SENT }) }
+        if (this.state.showSentMails) { data = data.filter((singlMail) => { return singlMail.type === Mail.TYPE_SENT }) } // Se hace para que Mailbox solo muestre los enviados si se eligio dicha opcion
         const username = `${this.props.user.lastname} ${this.props.user.firstname}`;
         return (
             <Grid container direction="row" >
@@ -228,7 +232,7 @@ class Dashboard extends Component {
                 { this.state.selectedMail && <MailDisplayerDialogComponent onClose={this.handleCloseMailModal} // Hago esto porquew cuando se cerraba el modal, no se destruia el Dialog y la pantalla me quedaba bloquedada
                     mail={this.state.selectedMail}/>}
 
-                { this.state.openMailForm && <MailFormDialogComponent onClose={this.handleMailForm} save={this.handleSaveMail}/>}
+                { this.state.openMailForm && <MailFormDialogComponent onClose={this.handleMailForm} save={this.handleSaveMail}/>} /*Hago esto porquew cuando se cerraba el modal, no se destruia el Dialog y la pantalla me quedaba bloqueas*/
 
                 <Grid item xs={2}>
                     <LeftSideMenuComponent userName={username} mails={mail}

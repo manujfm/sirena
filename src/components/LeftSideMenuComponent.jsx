@@ -29,11 +29,9 @@ const classes = {
 };
 
 class LeftSideMenuComponent extends Component {
-
-    openSentMails(){
-        this.props.onOpenSent()
+    openSentMails () {
+        this.props.onOpenSent();
     }
-
 
     __renderDrawerContent () {
         return (
@@ -44,13 +42,13 @@ class LeftSideMenuComponent extends Component {
 
                 <Divider />
                 <List>
-                    <ListItem button selected={!this.props.changeSeleted} onClick={ () => {this.openSentMails()}}>
+                    <ListItem button selected={!this.props.changeSeleted} onClick={ () => { this.openSentMails() }}>
                         <ListItemIcon>
                             <InboxIcon />
                         </ListItemIcon>
                         <ListItemText primary={`Inbox (${this.props.mails.length})`} />
                     </ListItem>
-                    <ListItem button selected={this.props.changeSeleted}   onClick={ () => {this.openSentMails()}}>
+                    <ListItem button selected={this.props.changeSeleted} onClick={ () => { this.openSentMails() }}>
                         <ListItemIcon>
                             <SendIcon/>
                         </ListItemIcon>
