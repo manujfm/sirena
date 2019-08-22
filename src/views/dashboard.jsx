@@ -232,7 +232,7 @@ class Dashboard extends Component {
                 { this.state.selectedMail && <MailDisplayerDialogComponent onClose={this.handleCloseMailModal} // Hago esto porquew cuando se cerraba el modal, no se destruia el Dialog y la pantalla me quedaba bloquedada
                     mail={this.state.selectedMail}/>}
 
-                { this.state.openMailForm && <MailFormDialogComponent onClose={this.handleMailForm} save={this.handleSaveMail}/>} /*Hago esto porquew cuando se cerraba el modal, no se destruia el Dialog y la pantalla me quedaba bloqueas*/
+                { this.state.openMailForm && <MailFormDialogComponent onClose={this.handleMailForm} save={this.handleSaveMail}/>} 
 
                 <Grid item xs={2}>
                     <LeftSideMenuComponent userName={username} mails={mail}
