@@ -66,14 +66,16 @@ class LoginManager {
      */
     async login () {
         const payload = await sirena.request('post', 'api/login', { username: this.user, password: this.password });
+        let err = "UPPS !!! Server ERROR"
         if (payload) {
             const loginInfo = payload;
             if (loginInfo.ok) {
                 this.setLoggedUser(loginInfo.token, loginInfo.userInfo);
                 return { ok: true, userinfo: loginInfo.userInfo };
             }
+            err = loginInfo.error
         }
-        return { ok: false, error: 'Upps!! We are experimenting with a server error, try later' };
+        return { ok: false, error: err };
     }
 
     logout () {
